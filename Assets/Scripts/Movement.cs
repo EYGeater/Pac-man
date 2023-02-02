@@ -25,6 +25,7 @@ public class Movement : MonoBehaviour
         ResetState();
     }
 
+    
     public void ResetState()
     {
         this.speedMultiplier = 1.0f;
@@ -33,6 +34,16 @@ public class Movement : MonoBehaviour
         this.transform.position = this.startingPosition;
         this.rigidbody.isKinematic = false;
         this.enabled = true;
+    }
+
+    private void Update()
+    {
+        // Try to move in the next direction while it's queued to make movements
+        // more responsive
+        if (this.nextDirection != Vector2.zero)
+        {
+            SetDirection(nextDirection);
+        }
     }
 
     private void FixedUpdate()
@@ -44,19 +55,23 @@ public class Movement : MonoBehaviour
 
     public void SetDirection(Vector2 direction, bool forced = false)
     {
+        //setting the direction based on occupied bool, if it isnt occupied- set direction to direction and next direction to 0,0
         if (forced || !Occupied(direction))
         {
             this.direction = direction;
             this.nextDirection = Vector2.zero;
         }
+        //if the direction is occupied, set the next direction to direction 
         else
         {
             this.nextDirection = direction;
         }
     }
 
+    //bool returns true if a space direction is occupied, but returns false if not 
     public bool Occupied(Vector2 direction)
     {
+        // raycast checks if we can turn that direction information is in order of - where the box starts being drawn, the size of the box, the angle, the direction we want to move in- so that we are 1 movement over - plus the center of the object, finally check which layer you're raycasting 
         RaycastHit2D hit = Physics2D.BoxCast(this.transform.position, Vector2.one * 0.75f, 0.0f, direction, 1.5f, this.obstaclelayer);
         return hit.collider != null;
     }
