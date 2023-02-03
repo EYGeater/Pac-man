@@ -87,15 +87,16 @@ public class GameManager : MonoBehaviour
     }
     public void PacmanEaten()
     {
-        this.pacman.gameObject.SetActive(false);
+        this.pacman.DeathSequence();
+        //this.pacman.gameObject.SetActive(false);
         SetLives(this.lives - 1);
         if (this.lives > 0)
         {
-            Invoke(nameof(ResetState), 3.0f);
+            Invoke(nameof(ResetState), 1.0f);
         }
         else
         {
-            GameOver();
+            Invoke(nameof(GameOver), 1.0f);
         }
     }
     public void PelletEaten(Pellet pellet)

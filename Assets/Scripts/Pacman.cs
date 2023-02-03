@@ -8,10 +8,16 @@ using UnityEngine;
 public class Pacman : MonoBehaviour
 {
 
+    
+    public AnimatedSprite animatedSprite; 
+    public SpriteRenderer spriteRenderer { get; private set; }
+    public CircleCollider2D collider { get; private set; }
     public Movement movement { get; private set; }
     private void Awake()
     {
+        this.spriteRenderer = GetComponent<SpriteRenderer>();
         this.movement = GetComponent<Movement>();
+        this.collider = GetComponent<CircleCollider2D>();
     }
     private void Update()
     {
@@ -40,12 +46,35 @@ public class Pacman : MonoBehaviour
 
     }
 
+    
+
 
 
     public void ResetState()
     {
+        animatedSprite.spriteRenderer.enabled = false;
+        animatedSprite.enabled = false;
+        this.spriteRenderer.enabled = true;
+        //this.enabled = true;
+        this.movement.enabled = true;
+        this.collider.enabled = true;
         this.movement.ResetState();
         this.gameObject.SetActive(true);
+        
+    }
+
+    public void DeathSequence()
+    {
+        //this.enabled = false;
+        this.collider.enabled = false; 
+        this.spriteRenderer.enabled = false;
+        animatedSprite.spriteRenderer.enabled = true;
+        animatedSprite.enabled = true;
+        this.movement.enabled = false;
+        animatedSprite.Restart();
+
+        
+
     }
 
 

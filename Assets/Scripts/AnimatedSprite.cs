@@ -44,11 +44,17 @@ public class AnimatedSprite : MonoBehaviour
         {
             this.spriteRenderer.sprite = this.sprites[this.animationFrame];
         }
+
     }
     //if you ever want to go restart the animation seperately 
     public void Restart()
     {
         this.animationFrame = -1;
+        Advance();
+    }
+    public void NoLoop()
+    {
+        loop = false;
         Advance();
     }
 
