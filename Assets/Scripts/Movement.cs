@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(RigidbodyConstraints2D))]
+
+
+[RequireComponent(typeof(Rigidbody2D))]
+
 public class Movement : MonoBehaviour
 {
     public float speed = 8.0f;
-
     public float speedMultiplier = 1.0f;
     public Vector2 initialDirection;
-    public LayerMask obstaclelayer;
+    public LayerMask obstacleLayer;
     public new Rigidbody2D rigidbody { get; private set; }
     public Vector2 direction { get; private set; }
     public Vector2 nextDirection { get; private set; }
@@ -17,15 +19,16 @@ public class Movement : MonoBehaviour
 
     private void Awake()
     {
+
         this.rigidbody = GetComponent<Rigidbody2D>();
+        this.startingPosition = this.transform.position;
     }
 
-    public void Start()
+    private void Start()
     {
         ResetState();
-    }
 
-    
+    }
     public void ResetState()
     {
         this.speedMultiplier = 1.0f;
@@ -34,22 +37,22 @@ public class Movement : MonoBehaviour
         this.transform.position = this.startingPosition;
         this.rigidbody.isKinematic = false;
         this.enabled = true;
+
     }
 
     private void Update()
     {
-        // Try to move in the next direction while it's queued to make movements
-        // more responsive
+        //every single frame the game will try to set your next direction as the direction it goes- until it can not
         if (this.nextDirection != Vector2.zero)
         {
-            SetDirection(nextDirection);
+            SetDirection(this.nextDirection);
         }
     }
 
     private void FixedUpdate()
     {
         Vector2 position = this.rigidbody.position;
-        Vector2 translation = this.direction * this.speed * this.speedMultiplier;
+        Vector2 translation = this.direction * this.speed * this.speedMultiplier * Time.fixedDeltaTime;
         this.rigidbody.MovePosition(position + translation);
     }
 
@@ -67,13 +70,14 @@ public class Movement : MonoBehaviour
             this.nextDirection = direction;
         }
     }
-
     //bool returns true if a space direction is occupied, but returns false if not 
     public bool Occupied(Vector2 direction)
     {
         // raycast checks if we can turn that direction information is in order of - where the box starts being drawn, the size of the box, the angle, the direction we want to move in- so that we are 1 movement over - plus the center of the object, finally check which layer you're raycasting 
-        RaycastHit2D hit = Physics2D.BoxCast(this.transform.position, Vector2.one * 0.75f, 0.0f, direction, 1.5f, this.obstaclelayer);
+        RaycastHit2D hit = Physics2D.BoxCast(this.transform.position, Vector2.one * 0.75f, 0.0f, direction, 1.5f, this.obstacleLayer);
         return hit.collider != null;
     }
-}
 
+
+
+}
