@@ -8,7 +8,7 @@ using UnityEngine;
 public class Pacman : MonoBehaviour
 {
 
-    
+    public AudioSource deathSound;
     public AnimatedSprite animatedSprite; 
     public SpriteRenderer spriteRenderer { get; private set; }
     public CircleCollider2D collider { get; private set; }
@@ -65,6 +65,7 @@ public class Pacman : MonoBehaviour
 
     public void DeathSequence()
     {
+        deathSound.Play();
         //this.enabled = false;
         this.collider.enabled = false; 
         this.spriteRenderer.enabled = false;
