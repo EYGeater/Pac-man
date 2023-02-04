@@ -5,21 +5,56 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagerScript : MonoBehaviour
 {
+    public AudioClip selectNoise;
+    public AudioSource noiseSource { get; private set; }
+
+
+    private void Awake()
+    {
+        noiseSource = GetComponent<AudioSource>();
+    }
     public void LevelOne()
     {
-        Debug.Log("huh");
-        SceneManager.LoadScene("Level1");
+        this.noiseSource.clip = selectNoise;
+        this.noiseSource.loop = false;
+        this.noiseSource.Play();
+        Invoke(nameof(LoadLevelOne), 0.5f);
         //mainMenu.gameObject.SetActive(false); 
         //levelOneSound();
         //NewGame();
     }
     public void LevelTwo()
     {
-        SceneManager.LoadScene("Level2");
+        this.noiseSource.clip = selectNoise;
+        this.noiseSource.loop = false;
+        this.noiseSource.Play();
+        Invoke(nameof(LoadLevelTwo), 0.5f);
     }
 
     public void Menu()
     {
-        SceneManager.LoadScene("Menu");
+        this.noiseSource.clip = selectNoise;
+        this.noiseSource.loop = false;
+        this.noiseSource.Play();
+        Invoke(nameof(LoadMenu), 0.5f);
     }
+
+    public void LoadLevelOne()
+    {
+        SceneManager.LoadScene("Level1");
+
+    }
+    public void LoadLevelTwo(){
+
+        SceneManager.LoadScene("Level2");
+
+    }
+    public void LoadMenu()
+    {
+
+        SceneManager.LoadScene("Menu");
+
+    }
+
+
 }

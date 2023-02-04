@@ -9,9 +9,12 @@ public class GameManager : MonoBehaviour
     public Ghost[] ghosts;
     public Pacman pacman;
     public Transform pellets;
+    public Transform fruit;
     public Text scoreText;
     public Text livesText;
-    public GameObject GameOverCanvas;
+    public Text finalText;
+    public GameObject gameOverCanvas;
+    public GameObject map;
 
     public AudioClip levelOneclip;
     public AudioClip menu;
@@ -23,12 +26,12 @@ public class GameManager : MonoBehaviour
     public int score { get; private set; }
     public int lives { get; private set; }
 
-
+    private int pelletsEaten = 0; 
 
 
     private void Awake()
     {
-        GameOverCanvas.SetActive(false);
+        gameOverCanvas.SetActive(false);
         levelSource = GetComponent<AudioSource>();
     }
     private void Start()
@@ -68,6 +71,7 @@ public class GameManager : MonoBehaviour
     }
     private void NewGame()
     {
+        map.gameObject.SetActive(true);
         SetScore(0);
         SetLives(3);
         NewRound();
@@ -87,10 +91,11 @@ public class GameManager : MonoBehaviour
         {
             this.ghosts[i].gameObject.SetActive(false);
         }
-
+        map.gameObject.SetActive(false);
         this.pacman.gameObject.SetActive(false);
         GameOverSound();
-        GameOverCanvas.SetActive(true);
+        finalText.text = "Final Score:\n" + score;
+        gameOverCanvas.SetActive(true);
 
         //put in game over text with score at the middle then have a button to go back to the menu 
 
@@ -99,6 +104,7 @@ public class GameManager : MonoBehaviour
 
     private void ResetState()
     {
+        fruit.gameObject.SetActive(false);
         RestGhostMultiplier();
         for (int i = 0; i < this.ghosts.Length; i++)
         {
@@ -143,6 +149,14 @@ public class GameManager : MonoBehaviour
     {
         pellet.gameObject.SetActive(false);
         SetScore(this.score + pellet.points);
+        pelletsEaten++;
+
+        if(pelletsEaten == 200)
+        {
+            pelletsEaten = 0;
+            fruit.gameObject.SetActive(true);
+        }
+
         if (!HasRemainingPellets())
         {
             this.pacman.gameObject.SetActive(false);
@@ -161,7 +175,16 @@ public class GameManager : MonoBehaviour
         CancelInvoke(); // this is so if you get another powerpellet right after another - the muiltiplier stays 
         Invoke(nameof(RestGhostMultiplier), pellet.duration);
 
+    }
 
+    public void FruitEaten(Fruit fruit)
+    {
+        fruit.gameObject.SetActive(false);
+        SetScore(this.score + fruit.points);
+    }
+    public void FruitDespawn(Fruit fruit)
+    {
+        fruit.gameObject.SetActive(false);
     }
 
     private bool HasRemainingPellets()
