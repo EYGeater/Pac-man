@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
     }
     private void NewRound()
     {
+        fruit.gameObject.SetActive(false);
         gameOver = false;
 
         foreach (Transform pellet in this.pellets)
