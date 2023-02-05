@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     public Text finalText;
     public GameObject gameOverCanvas;
     public GameObject map;
+    public static int highScoreOne;
+    public static int highScoreTwo;
+    public int level; 
 
     public AudioClip levelOneclip;
     public AudioClip menu;
@@ -26,7 +29,8 @@ public class GameManager : MonoBehaviour
     public int score { get; private set; }
     public int lives { get; private set; }
 
-    private int pelletsEaten = 0; 
+    private int pelletsEaten = 0;
+    private bool gameOver = false; 
 
 
     private void Awake()
@@ -61,8 +65,16 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        scoreText.text = "Score: " + score;
-        livesText.text = "Lives: " + lives;
+        if (gameOver == true){
+            scoreText.text = " " ;
+            livesText.text = " " ;
+        }
+        else
+        {
+            scoreText.text = "Score: " + score;
+            livesText.text = "Lives: " + lives;
+        }
+        
         /*if (this.lives <= 0 && Input.anyKeyDown)
         {
             NewGame();
@@ -78,6 +90,8 @@ public class GameManager : MonoBehaviour
     }
     private void NewRound()
     {
+        gameOver = false;
+
         foreach (Transform pellet in this.pellets)
         {
             pellet.gameObject.SetActive(true);
@@ -87,15 +101,40 @@ public class GameManager : MonoBehaviour
 
     private void GameOver()
     {
+        fruit.gameObject.SetActive(false);
+        gameOver = true;
         for (int i = 0; i < this.ghosts.Length; i++)
         {
             this.ghosts[i].gameObject.SetActive(false);
         }
+        livesText.text = " ";
+        scoreText.text = " ";
+
         map.gameObject.SetActive(false);
         this.pacman.gameObject.SetActive(false);
         GameOverSound();
-        finalText.text = "Final Score:\n" + score;
+
         gameOverCanvas.SetActive(true);
+        if ( level == 1 && highScoreOne <= score)
+        {
+            finalText.text = "New High Score!\n" + score;
+            highScoreOne = score;
+        }
+        else if ( level == 1 && highScoreOne > score)
+        {
+            finalText.text = "High Score:\n" + highScoreOne + "\nYour Score: \n" + score;
+        }
+        if (level == 2 && highScoreTwo <= score)
+        {
+            finalText.text = "New High Score!\n" + score;
+            highScoreTwo = score;
+        }
+        else if (level == 2 && highScoreTwo > score)
+        {
+            finalText.text = "High Score:\n" + highScoreTwo + "\nYour Score: \n" + score;
+        }
+
+
 
         //put in game over text with score at the middle then have a button to go back to the menu 
 

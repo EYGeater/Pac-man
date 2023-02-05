@@ -38,6 +38,13 @@ public class SceneManagerScript : MonoBehaviour
         this.noiseSource.Play();
         Invoke(nameof(LoadMenu), 0.5f);
     }
+    public void Credits()
+    {
+        this.noiseSource.clip = selectNoise;
+        this.noiseSource.loop = false;
+        this.noiseSource.Play();
+        Invoke(nameof(LoadCredits), 0.5f);
+    }
 
     public void LoadLevelOne()
     {
@@ -53,6 +60,11 @@ public class SceneManagerScript : MonoBehaviour
     {
 
         SceneManager.LoadScene("Menu");
+
+    }
+    public void LoadCredits()
+    {
+        SceneManager.LoadScene("Credits");
 
     }
 
