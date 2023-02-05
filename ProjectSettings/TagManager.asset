@@ -8,13 +8,13 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Pacman
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Ghost
+  - Nodes
+  - Obstacles
+  - Pellets
   - 
   - 
   - 
