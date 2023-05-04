@@ -15,6 +15,8 @@ public class GhostFrightened : GhostBehaviour
     public override void Enable(float duration)
         //enabled inmstead of on enable - if the ghost is already enabled, and it gets enabled 2nd time. - like 2 power pellets, we need to make sure the renders are reset and invoke is reset- otherwise the ghosts may not be on proper state, onenable only gets called from disable to enable, but the custom enable function can be called wheneevr
     {
+        //duration has to be hard coded as there's an error with all the durations making what evrr frightened is in the inspector 3
+        duration = 7f;
         base.Enable(duration);
         this.body.enabled = false;
         this.eyes.enabled = false;

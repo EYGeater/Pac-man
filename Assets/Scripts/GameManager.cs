@@ -15,8 +15,8 @@ public class GameManager : MonoBehaviour
     public Text finalText;
     public GameObject gameOverCanvas;
     public GameObject map;
-    public static int highScoreOne;
-    public static int highScoreTwo;
+   // public static int highScoreOne;
+    //public static int highScoreTwo;
     public int level; 
 
     public AudioClip levelOneclip;
@@ -37,6 +37,24 @@ public class GameManager : MonoBehaviour
     {
         gameOverCanvas.SetActive(false);
         levelSource = GetComponent<AudioSource>();
+
+
+        if (PlayerPrefs.GetInt("highScoreOne") == null)
+        {
+            PlayerPrefs.SetInt("highScoreOne", 0);
+        }
+        else
+        {
+            PlayerPrefs.GetInt("highScoreOne");
+        }
+        if (PlayerPrefs.GetInt("highScoreTwo") == null)
+        {
+            PlayerPrefs.SetInt("highScoreTwo", 0);
+        }
+        else
+        {
+            PlayerPrefs.GetInt("highScoreTwo");
+        }
     }
     private void Start()
     {
@@ -44,23 +62,7 @@ public class GameManager : MonoBehaviour
         NewGame();
         
     }
-    /*public void LevelOne()
-    {
-        SceneManager.LoadScene("Level1");
-        //mainMenu.gameObject.SetActive(false); 
-        //levelOneSound();
-        //NewGame();
-    }
-    public void LevelTwo()
-    {
-        SceneManager.LoadScene("Level2");
-    }
-
-    public void Menu()
-    {
-        mainMenu.gameObject.SetActive(true);
-        menuSound();
-    }*/
+   
 
 
     private void Update()
@@ -75,10 +77,7 @@ public class GameManager : MonoBehaviour
             livesText.text = "Lives: " + lives;
         }
         
-        /*if (this.lives <= 0 && Input.anyKeyDown)
-        {
-            NewGame();
-        }*/
+       
  
     }
     private void NewGame()
@@ -116,28 +115,27 @@ public class GameManager : MonoBehaviour
         GameOverSound();
 
         gameOverCanvas.SetActive(true);
-        if ( level == 1 && highScoreOne <= score)
+        if(level == 1  && PlayerPrefs.GetInt("highScoreOne") <= score)
         {
             finalText.text = "New High Score!\n" + score;
-            highScoreOne = score;
+            PlayerPrefs.SetInt("highScoreOne", score);
         }
-        else if ( level == 1 && highScoreOne > score)
+        else if (level == 1 && PlayerPrefs.GetInt("highScoreOne") > score)
         {
-            finalText.text = "High Score:\n" + highScoreOne + "\nYour Score: \n" + score;
+            finalText.text = "High Score:\n" + PlayerPrefs.GetInt("highScoreOne").ToString() + "\nYour Score: \n" + score;
         }
-        if (level == 2 && highScoreTwo <= score)
+        if (level == 2 && PlayerPrefs.GetInt("highScoreTwo") <= score)
         {
             finalText.text = "New High Score!\n" + score;
-            highScoreTwo = score;
+            PlayerPrefs.SetInt("highScoreTwo", score);
         }
-        else if (level == 2 && highScoreTwo > score)
+        else if (level == 2 && PlayerPrefs.GetInt("highScoreTwo") > score)
         {
-            finalText.text = "High Score:\n" + highScoreTwo + "\nYour Score: \n" + score;
+            finalText.text = "High Score:\n" + PlayerPrefs.GetInt("highScoreTwo").ToString() + "\nYour Score: \n" + score;
         }
 
 
 
-        //put in game over text with score at the middle then have a button to go back to the menu 
 
 
     }
@@ -174,7 +172,6 @@ public class GameManager : MonoBehaviour
     public void PacmanEaten()
     {
         this.pacman.DeathSequence();
-        //this.pacman.gameObject.SetActive(false);
         SetLives(this.lives - 1);
         if (this.lives > 0)
         {

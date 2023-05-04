@@ -340,7 +340,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff3bde628cb35324db8a30cc4aa22af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 8
+  duration: 7
   body: {fileID: 7321155427903774848}
   eyes: {fileID: 7321155428596135118}
   blue: {fileID: 7321155429721158021}

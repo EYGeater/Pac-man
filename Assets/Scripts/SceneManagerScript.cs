@@ -19,9 +19,7 @@ public class SceneManagerScript : MonoBehaviour
         this.noiseSource.loop = false;
         this.noiseSource.Play();
         Invoke(nameof(LoadLevelOne), 0.5f);
-        //mainMenu.gameObject.SetActive(false); 
-        //levelOneSound();
-        //NewGame();
+        
     }
     public void LevelTwo()
     {
